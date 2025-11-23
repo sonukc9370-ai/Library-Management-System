@@ -8,6 +8,7 @@
 This project demonstrates the implementation of a **Library Management System** using **SQL**. It includes the database schema design, data population, and complex SQL queries to manage day-to-day library operations. 
 
 The project covers the entire lifecycle of a library database, from setting up tables to defining business logic for borrowing, returning, and fining books.
+![Library Management System](Diagram/images1.png)
 
 ---
 
