@@ -102,7 +102,7 @@ GROUP BY Issued_member_id
 HAVING Count(*)>1;
 ```
 
-### 3. CTAS (Create Table As Select)
+### CTAS (Create Table As Select)
 
 - **Task 6: Create Summary Tables**: Used CTAS to generate new tables based on query results - each book and total book_issued_cnt**
 
@@ -389,4 +389,14 @@ SELECT
 FROM Overdue_days
 ORDER BY member_id;
 ```
+
+## How to Use
+
+1. **Clone the Repository**: Clone this repository to your local machine.
+   ```sh
+   git clone https://github.com/sonukc9370-ai/Library-Management-System
+   ```
+
+2. **Set Up the Database**: Execute the SQL scripts in the Sql_Scipts Section to create and populate the database.
+3. **Run the Queries**: Use the SQL queries in the `analysis_queries.sql` in Sql_Script Section to perform the analysis.
 
