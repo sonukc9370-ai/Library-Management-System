@@ -54,7 +54,7 @@ This project involves 20+ SQL queries. Below are 5 key problems solved, showcasi
 <details>
 <summary><strong>1. Identify Members with Overdue Books (30+ Days)</strong></summary>
 
-*calculates fines and identifies overdue books.*
+*Calculates fines and identifies overdue books.*
 
 ```sql
 SELECT 
@@ -62,40 +62,33 @@ SELECT
     m.member_name,
     b.book_title,
     i.issued_date,
-    (current_date() - i.issued_date) as Over_due_days
+    (current_date() - i.issued_date) AS Over_due_days
 FROM members m
 JOIN issued_status i ON m.member_id = i.issued_member_id
 JOIN books b ON i.issued_book_isbn = b.isbn
 LEFT JOIN return_status r ON i.issued_id = r.issued_id
 WHERE r.return_date IS NULL
-  AND (current_date() - i.issued_date) > 30;
-</details>
-
-<details> <summary><strong>2. Branch Performance Report (Complex Join & Aggregation)</strong></summary>
+AND (current_date() - i.issued_date) > 30;
+</details> <details> <summary><strong>2. Branch Performance Report (Complex Join & Aggregation)</strong></summary>
 
 Generates a summary of total issued books, returned books, and revenue per branch.
-
-SQL
 
 SELECT 
     b.branch_id,
     b.manager_id,
-    COUNT(i.issued_id) as total_books_issued,
-    COUNT(r.return_id) as total_books_returned,
-    CONCAT('$', SUM(bk.rental_price)) as total_revenue
+    COUNT(i.issued_id) AS total_books_issued,
+    COUNT(r.return_id) AS total_books_returned,
+    CONCAT('$', SUM(bk.rental_price)) AS total_revenue
 FROM branch b
 JOIN employees e ON b.branch_id = e.branch_id
 JOIN issued_status i ON e.emp_id = i.issued_emp_id
 LEFT JOIN return_status r ON i.issued_id = r.issued_id
 JOIN books bk ON i.issued_book_isbn = bk.isbn
 GROUP BY b.branch_id, b.manager_id;
-</details>
 
-<details> <summary><strong>3. Stored Procedure: Auto-Issue Book</strong></summary>
+</details> <details> <summary><strong>3. Stored Procedure: Auto-Issue Book</strong></summary>
 
 Checks availability before issuing. If 'yes', issues book & updates status to 'no'.
-
-SQL
 
 CREATE PROCEDURE book_assign(
     IN p_issued_id VARCHAR(10),
@@ -107,53 +100,67 @@ CREATE PROCEDURE book_assign(
 BEGIN
     DECLARE v_status VARCHAR(10);
 
-    SELECT status INTO v_status FROM books WHERE isbn = p_issued_book_isbn;
+    SELECT status INTO v_status 
+    FROM books 
+    WHERE isbn = p_issued_book_isbn;
 
     IF v_status = 'yes' THEN
         INSERT INTO issued_status(issued_id, issued_member_id, issued_book_isbn, issued_emp_id)
         VALUES (p_issued_id, p_issued_member_id, p_issued_book_isbn, p_issued_emp_id);
 
-        UPDATE books SET status = 'no' WHERE isbn = p_issued_book_isbn;
+        UPDATE books 
+        SET status = 'no' 
+        WHERE isbn = p_issued_book_isbn;
+
         SET p_message = 'Book Issued Successfully';
     ELSE
         SET p_message = 'Book Not Available';
     END IF;
 END;
-</details>
 
-<details> <summary><strong>4. High-Risk Members (Complex Logic)</strong></summary>
+</details> <details> <summary><strong>4. High-Risk Members (Complex Logic)</strong></summary>
 
 Identifies members who have damaged books more than twice.
 
-SQL
-
 SELECT 
     m.member_name,
-    COUNT(CASE WHEN r.book_quality = 'damaged' THEN 1 END) as damaged_books_count
+    COUNT(CASE WHEN r.book_quality = 'damaged' THEN 1 END) AS damaged_books_count
 FROM issued_status i
 JOIN members m ON i.issued_member_id = m.member_id
 JOIN return_status r ON i.issued_id = r.issued_id
 GROUP BY m.member_name
 HAVING COUNT(CASE WHEN r.book_quality = 'damaged' THEN 1 END) > 2;
-</details>
 
-<details> <summary><strong>5. CTAS: Overdue Fines Report</strong></summary>
+</details> <details> <summary><strong>5. CTAS: Overdue Fines Report</strong></summary>
 
-Create a new table containing fine calculations for all overdue members.
-
-SQL
+Creates a new table containing fine calculations for overdue members.
 
 CREATE TABLE fine_report AS
 SELECT 
     m.member_id,
-    COUNT(i.issued_id) as books_issued,
-    COUNT(CASE WHEN DATEDIFF(CURDATE(), i.issued_date) > 30 THEN 1 END) as overdue_books,
-    CONCAT('$', COUNT(CASE WHEN DATEDIFF(CURDATE(), i.issued_date) > 30 THEN 1 END) * 0.50) as total_fine
+    COUNT(i.issued_id) AS books_issued,
+    COUNT(
+        CASE 
+            WHEN DATEDIFF(CURDATE(), i.issued_date) > 30 
+                 AND r.return_date IS NULL
+            THEN 1 
+        END
+    ) AS overdue_books,
+    CONCAT(
+        '$', 
+        COUNT(
+            CASE 
+                WHEN DATEDIFF(CURDATE(), i.issued_date) > 30 
+                     AND r.return_date IS NULL
+                THEN 1 
+            END
+        ) * 0.50
+    ) AS total_fine
 FROM members m
 JOIN issued_status i ON m.member_id = i.issued_member_id
 LEFT JOIN return_status r ON i.issued_id = r.issued_id
-WHERE r.return_date IS NULL
 GROUP BY m.member_id;
+
 </details>
 ```
 
