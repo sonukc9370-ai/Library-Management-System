@@ -49,8 +49,49 @@ The project covers the entire lifecycle of a library database, from setting up t
 
 ---
 
-## 💻 How to Run
+### CRUD OPERATIONS 
+- **Create**: Inserted sample records into the `books` table.
+- **Read**: Retrieved and displayed data from various tables.
+- **Update**: Updated records in the `employees` table.
+- **Delete**: Removed records from the `members` table as needed.
 
-### 1. Clone the Repository
-```bash
-git clone [https://github.com/yourusername/Library-Management-System.git](https://github.com/yourusername/Library-Management-System.git)
+**Task 1. Create a New Book Record**
+-- "978-1-60129-456-2', 'To Kill a Mockingbird', 'Classic', 6.00, 'yes', 'Harper Lee', 'J.B. Lippincott & Co.')"
+
+```sql
+INSERT INTO Books (isbn,book_title,category,rental_price,status,author,publisher) VALUES
+('978-1-60129-456-2', 'To Kill a Mockingbird', 'Classic', 6.00, 'yes', 'Harper Lee', 'J.B. Lippincott & Co.');
+SELECT * FROM Books;
+```
+
+**Task 2: Update an Existing Member's Address**
+
+```sql
+UPDATE members
+Set member_address = '125 Oak St.'
+WHERE member_id='C101';
+```
+
+**Task 3: Delete a Record from the Issued Status Table**
+-- Objective: Delete the record with issued_id = 'IS121' from the issued_status table.
+
+```sql
+DELETE FROM issued_status
+WHERE Issued_id='IS121';
+```
+
+**Task 4: Retrieve All Books Issued by a Specific Employee**
+-- Objective: Select all books issued by the employee with emp_id = 'E101'.
+
+```sql
+SELECT issued_emp_id,issued_book_name FROM Issued_Status WHERE issued_emp_id='E101';
+```
+
+**Task 5: List Members Who Have Issued More Than One Book**
+-- Objective: Use GROUP BY to find members who have issued more than one book.
+
+```sql
+SELECT Issued_member_id,count(*) as Total_Books_Issued FROM Issued_status 
+GROUP BY Issued_member_id HAVING Count(*)>1;
+```
+
