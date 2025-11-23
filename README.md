@@ -43,18 +43,8 @@ The project covers the entire lifecycle of a library database, from setting up t
 
 ---
 
-## 📝 Key SQL Problems Solved
-
-Below are some of the key tasks addressed in the project:
-
-1.  **Branch Performance Report**: 
-    * Calculates total books issued, returned, and revenue generated per branch.
-2.  **Overdue Analysis**: 
-    * Identifies members with overdue books and calculates fines based on a $0.50/day policy.
-3.  **Member Activity**: 
-    * Identifies active members (issued books in the last 2 months) and high-risk members (those who have returned damaged books more than twice).
-4.  **Dynamic Status Updates**: 
-    * Uses a Stored Procedure `book_assign` to automatically check if a book is available ('yes') before issuing it.
+## Schema Setup
+![ERD](Diagram/ERD.png)
 
 ---
 
