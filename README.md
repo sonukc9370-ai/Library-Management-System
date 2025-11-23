@@ -80,7 +80,6 @@ AND (current_date() - i.issued_date) > 30;
 *Generates a summary of total issued books, returned books, and revenue per branch.*
 
 ```sql
-Copy code
 SELECT 
     b.branch_id,
     b.manager_id,
@@ -102,7 +101,6 @@ GROUP BY b.branch_id, b.manager_id;
 *Checks availability before issuing. If available, issues book & updates status.*
 
 ```sql
-Copy code
 CREATE PROCEDURE book_assign(
     IN p_issued_id VARCHAR(10),
     IN p_issued_member_id VARCHAR(10),
@@ -191,9 +189,11 @@ GROUP BY m.member_id;
 1. **Clone the Repository**
    ```sh
    git clone  https://github.com/sonukc9370-ai/Library-Management-System.git
+   ```
 
-Set Up the Database Execute the SQL scripts in the sql_scripts folder in the following order:
+2. **Set Up the Database** Execute the SQL scripts in the sql_scripts folder in the following order:
+   
+	`1. schema_setup.sql`
+	`2. insert_data.sql`
 
-	1. schema_setup.sql
-	2. insert_data.sql
-	3. Execute analysis_queries.sql to view the reports and data insights.
+4. **Run the Analysis** Execute `analysis_queries.sql`  in Sql_Scripts Folder to view the reports and data insights.
