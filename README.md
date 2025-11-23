@@ -193,7 +193,7 @@ GROUP BY m.member_id;
 
 2. **Set Up the Database** Execute the SQL scripts in the sql_scripts folder in the following order:
    
-	`1. schema_setup.sql`
+	`1. schema_setup.sql`<br>
 	`2. insert_data.sql`
 
 4. **Run the Analysis** Execute `analysis_queries.sql`  in Sql_Scripts Folder to view the reports and data insights.
