@@ -63,7 +63,7 @@ This project involves 20+ SQL queries solving real-world library management prob
 
 1. **Clone the Repository**
    ```sh
-   git clone [https://github.com/sonukc9370-ai/Library-Management-System.git](https://github.com/sonukc9370-ai/Library-Management-System.git)
+   git clone  https://github.com/sonukc9370-ai/Library-Management-System.git
 
 Set Up the Database Execute the SQL scripts in the sql_scripts folder in the following order:
 
