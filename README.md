@@ -137,7 +137,6 @@ END;
 *Identifies members who have damaged books more than twice.*
 
 ```sql
-Copy code
 SELECT 
     m.member_name,
     COUNT(CASE WHEN r.book_quality = 'damaged' THEN 1 END) AS damaged_books_count
@@ -155,7 +154,6 @@ HAVING COUNT(CASE WHEN r.book_quality = 'damaged' THEN 1 END) > 2;
 *Creates a new table containing fine calculations for overdue members.*
 
 ```sql
-Copy code
 CREATE TABLE fine_report AS
 SELECT 
     m.member_id,
@@ -194,6 +192,7 @@ GROUP BY m.member_id;
 2. **Set Up the Database** Execute the SQL scripts in the sql_scripts folder in the following order:
    
 	`1. schema_setup.sql`<br>
+	
 	`2. insert_data.sql`
 
 4. **Run the Analysis** Execute `analysis_queries.sql`  in Sql_Scripts Folder to view the reports and data insights.
