@@ -71,11 +71,15 @@ JOIN books b ON i.issued_book_isbn = b.isbn
 LEFT JOIN return_status r ON i.issued_id = r.issued_id
 WHERE r.return_date IS NULL
 AND (current_date() - i.issued_date) > 30;
+``` 
 </details>
-<details> <summary><strong>2. Branch Performance Report (Complex Join & Aggregation)</strong></summary>
-Generates a summary of total issued books, returned books, and revenue per branch.
 
-sql
+<details>
+<summary><strong>2. Branch Performance Report (Complex Join & Aggregation)</strong></summary>
+	
+*Generates a summary of total issued books, returned books, and revenue per branch.*
+
+```sql
 Copy code
 SELECT 
     b.branch_id,
@@ -89,11 +93,15 @@ JOIN issued_status i ON e.emp_id = i.issued_emp_id
 LEFT JOIN return_status r ON i.issued_id = r.issued_id
 JOIN books bk ON i.issued_book_isbn = bk.isbn
 GROUP BY b.branch_id, b.manager_id;
+```
 </details>
-<details> <summary><strong>3. Stored Procedure: Auto-Issue Book</strong></summary>
-Checks availability before issuing. If available, issues book & updates status.
 
-sql
+<details>
+<summary><strong>3. Stored Procedure: Auto-Issue Book</strong></summary>
+	
+*Checks availability before issuing. If available, issues book & updates status.*
+
+```sql
 Copy code
 CREATE PROCEDURE book_assign(
     IN p_issued_id VARCHAR(10),
@@ -122,11 +130,15 @@ BEGIN
         SET p_message = 'Book Not Available';
     END IF;
 END;
+```
 </details>
-<details> <summary><strong>4. High-Risk Members (Complex Logic)</strong></summary>
-Identifies members who have damaged books more than twice.
 
-sql
+<details>
+<summary><strong>4. High-Risk Members (Complex Logic)</strong></summary>
+
+*Identifies members who have damaged books more than twice.*
+
+```sql
 Copy code
 SELECT 
     m.member_name,
@@ -136,11 +148,15 @@ JOIN members m ON i.issued_member_id = m.member_id
 JOIN return_status r ON i.issued_id = r.issued_id
 GROUP BY m.member_name
 HAVING COUNT(CASE WHEN r.book_quality = 'damaged' THEN 1 END) > 2;
+```
 </details>
-<details> <summary><strong>5. CTAS: Overdue Fines Report</strong></summary>
-Creates a new table containing fine calculations for overdue members.
 
-sql
+<details>
+<summary><strong>5. CTAS: Overdue Fines Report</strong></summary>
+	
+*Creates a new table containing fine calculations for overdue members.*
+
+```sql
 Copy code
 CREATE TABLE fine_report AS
 SELECT 
@@ -167,6 +183,7 @@ FROM members m
 JOIN issued_status i ON m.member_id = i.issued_member_id
 LEFT JOIN return_status r ON i.issued_id = r.issued_id
 GROUP BY m.member_id;
+```
 </details>
 
 ## 💻 How to Use
